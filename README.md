@@ -1,0 +1,2 @@
+# easypygame
+make pygame easier
