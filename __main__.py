@@ -19,6 +19,8 @@ class Game:
 	
 	def __init__(self):
 		pygame.init()
+		pygame.mixer.pre_init()
+		pygame.mixer.init()
 		self.__screen = pygame.display.set_mode(self._wndsize)
 		self.__api = GameAPI(self, self.__screen, self.__sprites)
 		self.__screen.fill(self._bgcolor)
@@ -61,7 +63,7 @@ class Game:
 		evchecker(pygevent, evdict)
 	
 	def internal_quitnow(self):
-		#
+		pygame.event.post(pygame.event.Event(pygame.QUIT))
 		
 	def run(self):
 		while True:
