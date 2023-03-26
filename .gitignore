@@ -127,3 +127,13 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Lightly auto generated
+.lightly
+.c_bin
+.classes
+logs
+node_modules
+dist
+dist-ssr
+*.local

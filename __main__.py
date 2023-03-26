@@ -1,4 +1,4 @@
-import pygame, importlib
+import pygame
 from epgtypes import *
 from event import evchecker
 from controls import Controller
@@ -7,9 +7,11 @@ class Game:
 	_wndsize = (640, 480)
 	_bgcolor = RGBTuple(0, 0, 0)
 	_caption = "-§DEFAULT§caption-"
+	_icon = "-§DEFAULT§caption-"
 	_nomadewith = False
 	
 	__screen = pygame.Surface
+	__iconsurface = pygame.Surface
 	__sprites = {'__list__': []}
 	__controls = {'__list__': []}
 	__events = {}
@@ -20,6 +22,10 @@ class Game:
 		self.__screen = pygame.display.set_mode(self._wndsize)
 		self.__api = GameAPI(self, self.__screen, self.__sprites)
 		self.__screen.fill(self._bgcolor)
+		self._setcaption()
+		self._seticon()
+
+	def _setcaption(self):
 		if self._caption != "-§DEFAULT§caption-":
 			if self._nomadewith:
 				pygame.display.set_caption(self._caption + " (Made with EasyPygame v1.0.0 by @littlekan233)")
@@ -27,6 +33,11 @@ class Game:
 				pygame.display.set_caption(self._caption)
 		elif self._caption == "-§DEFAULT§caption-" and not self._nomadewith:
 			pygame.display.set_caption("pygame window (Made with EasyPygame v1.0.0 by @littlekan233)")
+	
+	def _seticon(self):
+		if self._caption != "-§DEFAULT§caption-":
+			self.__iconsurface = pygame.image.load(_icon)
+			pygame.display.set_icon(self.__iconsurface)
 			
 	def loadSprite(self, spriteClass, spriteId : str):
 		if self.__sprites.has_key(spriteId):
@@ -61,6 +72,7 @@ class Game:
 			if len(self.__controls['__list__']):
 				for control in self.__controls['__list__']:
 					control.blit(self.__screen)
+			pygame.display.flip()
 
 class Sprite:
 	# Editable variables
@@ -95,18 +107,22 @@ class Sprite:
 		
 	# Public methods
 	def move(self, position : Position):
-		self._position += position
-		self.__rect.move(self._position)
+		self.__rect.x += self._position[0]
+		self.__rect.y += self._position[1]
 
 	def getPos(self, password):
 		if self._password == self.__defpwd or password != self._password:
 			return None
 		return self._position
-		
+
+	def setPos(self, position : Position):
+		self.__rect.x = self._position[0]
+		self.__rect.y = self._position[1]
+
 	def hide(self):
 		self.__oldpos = self._position[:]
 		self._position = (-999, -999)
-		self.__rect.move(self._position)
+		self.__rect.setpos(self._position)
 		self._onHide()
 		
 	def show(self):

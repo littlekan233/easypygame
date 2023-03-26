@@ -15,7 +15,7 @@ class Controller:
 class Button(Controller):
     def __init__(
 		self, 
-        screen : Surface, 
+        #screen : Surface, 
         width : int, 
         height : int, 
         text : str, 
